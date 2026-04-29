@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>从翰林到学徒 — 清末民初知识分子的"就业焦虑"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #1a1a2e;
+  --bg2: #16213e;
+  --gold: #c9a84c;
+  --gold-light: #e8d5b7;
+  --cream: #e8d5b7;
+  --dim: #8b8b9e;
+  --dark: #5a5a70;
+  --highlight: #f5e6c8;
+  --green: #4a9b7f;
+  --brown: #8b4513;
+  --serif: "Noto Serif SC", "楷体", "KaiTi", "STKaiti", serif;
+  --sans: "Microsoft YaHei", "微软雅黑", sans-serif;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--sans);
+  user-select: none;
+}
+
+/* ===== STAGE ===== */
+#stage {
+  position: relative;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
+  transition: opacity 0.4s ease;
+  overflow: hidden;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== BACKGROUND IMAGES ===== */
+.bg-cover    { background: url('../images/cover_bg.png') center/cover no-repeat; }
+.bg-ch1      { background: url('../images/chapter1_bg.png') center/cover no-repeat; }
+.bg-ch2      { background: url('../images/chapter2_bg.png') center/cover no-repeat; }
+.bg-ch3      { background: url('../images/chapter3_bg.png') center/cover no-repeat; }
+.bg-ending   { background: url('../images/ending_bg.png') center/cover no-repeat; }
+
+/* ===== OVERLAY DARK ===== */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(22, 33, 62, 0.75) 0%,
+    rgba(26, 26, 46, 0.5) 50%,
+    rgba(22, 33, 62, 0.7) 100%
+  );
+  pointer-events: none;
+}
+.overlay-light {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 33, 62, 0.3);
+  pointer-events: none;
+}
+.overlay-heavy {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 33, 62, 0.85);
+  pointer-events: none;
+}
+
+/* ===== COVER ===== */
+.cover {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 8%;
+}
+.cover__tag {
+  display: inline-block;
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 0.4rem;
+}
+.cover__title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+.cover__title span {
+  color: var(--gold);
+}
+.cover__subtitle {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: var(--dim);
+  font-weight: 300;
+  margin-bottom: 3rem;
+  letter-spacing: 0.1em;
+}
+.cover__meta {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.cover__meta-item {
+  font-size: 0.8rem;
+  color: var(--dark);
+  letter-spacing: 0.15em;
+}
+.cover__divider {
+  width: 1px; height: 14px;
+  background: var(--dark);
+}
+
+/* ===== CHAPTER PAGES ===== */
+.chapter {
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 8%;
+}
+.chapter__label {
+  font-family: var(--serif);
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+.chapter__num {
+  font-family: var(--serif);
+  font-size: clamp(5rem, 12vw, 10rem);
+  font-weight: 700;
+  color: rgba(201, 168, 76, 0.15);
+  line-height: 1;
+  margin-bottom: -1rem;
+  letter-spacing: -0.02em;
+}
+.chapter__title {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 2rem;
+  letter-spacing: 0.03em;
+}
+.chapter__speaker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  border-left: 2px solid var(--gold);
+  padding-left: 1rem;
+}
+.chapter--right {
+  align-items: flex-end;
+  text-align: right;
+}
+.chapter--right .chapter__speaker {
+  border-left: none;
+  border-right: 2px solid var(--gold);
+  padding-left: 0;
+  padding-right: 1rem;
+}
+
+/* ===== CONTENT PAGES ===== */
+.content {
+  padding: 0;
+  flex-direction: row;
+}
+.content__left {
+  flex: 0 0 45%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+.content__left-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 8s ease;
+}
+.content:hover .content__left-bg {
+  transform: scale(1.03);
+}
+.content__left-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(22,33,62,0.85) 0%, rgba(22,33,62,0.2) 100%);
+}
+.content__left-quote {
+  position: relative;
+  z-index: 1;
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+  color: var(--cream);
+  font-style: italic;
+  line-height: 1.7;
+  padding: 2rem;
+  max-width: 90%;
+  border-left: 3px solid var(--gold);
+  margin-left: 1rem;
+}
+.content__right {
+  flex: 1;
+  padding: 4% 5% 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  min-height: 0;
+}
+.content__header {
+  margin-bottom: 1.5rem;
+}
+.content__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.content__title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.content__title--large {
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+}
+.content__divider {
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-bottom: 1.2rem;
+}
+.content__body {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.85;
+  color: var(--cream);
+  opacity: 0.9;
+}
+.content__body p {
+  margin-bottom: 0.9rem;
+}
+.content__body p:last-child { margin-bottom: 0; }
+.content__body strong {
+  color: var(--gold);
+  font-weight: 600;
+}
+.content__body em {
+  color: var(--highlight);
+  font-style: normal;
+}
+.content__footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-num {
+  font-size: 0.7rem;
+  color: var(--dark);
+  letter-spacing: 0.2em;
+}
+.speaker-tag {
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  border: 1px solid var(--gold);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+}
+
+/* ===== FULL CONTENT (no split) ===== */
+.full-content {
+  padding: 3% 8% 3%;
+  justify-content: flex-start;
+  flex: 1;
+}
+.full-content > div {
+  flex: 1;
+}
+.full-content .content__title {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  margin-bottom: 1rem;
+}
+.full-content .content__divider {
+  margin-bottom: 1.5rem;
+}
+.insight-box {
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: 4px;
+  padding: 1.2rem 1.5rem;
+  margin-top: 1.2rem;
+}
+.insight-box__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.insight-box__text {
+  font-family: var(--serif);
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--highlight);
+  line-height: 1.7;
+}
+
+/* ===== THREE COLUMN ===== */
+.three-col {
+  padding: 3% 5% 3%;
+  flex-direction: column;
+}
+.three-col__header {
+  margin-bottom: 1.2rem;
+}
+.three-col__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  flex: 1;
+  align-content: start;
+}
+.col-card {
+  background: rgba(22, 33, 62, 0.6);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 6px;
+  padding: 1.5rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.col-card:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  transform: translateY(-3px);
+}
+.col-card__icon {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.col-card__title {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.col-card__text {
+  font-size: clamp(0.88rem, 1.2vw, 1rem);
+  color: var(--cream);
+  opacity: 0.85;
+  line-height: 1.75;
+  flex: 1;
+}
+.col-card__tag {
+  margin-top: 1rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--dark);
+  text-transform: uppercase;
+}
+.col-card--green { border-top: 2px solid var(--green); }
+.col-card--brown { border-top: 2px solid var(--brown); }
+.col-card--gold  { border-top: 2px solid var(--gold); }
+
+/* ===== COMPARISON ===== */
+.comparison {
+  padding: 3% 8% 3%;
+  flex-direction: column;
+}
+.comparison__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  flex: 1;
+  align-items: start;
+  align-content: start;
+  margin-top: 1rem;
+}
+.compare-card {
+  background: rgba(22, 33, 62, 0.7);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 6px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.compare-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  right: 0;
+  height: 3px;
+}
+.compare-card--left::before { background: var(--brown); }
+.compare-card--right::before { background: var(--gold); }
+.compare-card__title {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  color: var(--cream);
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+.compare-card__list {
+  list-style: none;
+}
+.compare-card__list li {
+  font-size: clamp(0.88rem, 1.2vw, 1rem);
+  color: var(--cream);
+  opacity: 0.88;
+  line-height: 1.75;
+  padding-left: 1rem;
+  position: relative;
+  margin-bottom: 0.6rem;
+}
+.compare-card__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  opacity: 0.6;
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  padding: 3% 8% 3%;
+  flex-direction: column;
+}
+.timeline__items {
+  position: relative;
+  margin-top: 1rem;
+  padding-left: 2rem;
+  flex: 1;
+}
+.timeline__items::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--gold), rgba(201,168,76,0.1));
+}
+.timeline__item {
+  position: relative;
+  margin-bottom: 1.4rem;
+  padding-left: 1.5rem;
+}
+.timeline__item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 0.4rem;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(201,168,76,0.4);
+}
+.timeline__year {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+.timeline__text {
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  color: var(--cream);
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+/* ===== TOC ===== */
+.toc {
+  justify-content: center;
+  align-items: flex-end;
+  text-align: left;
+  padding: 0;
+  flex-direction: column;
+  background: url('../images/cover_bg.png') center/cover no-repeat;
+  position: relative;
+}
+.toc__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(22,33,62,0.88) 0%, rgba(26,26,46,0.6) 50%, rgba(22,33,62,0.82) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.toc__cards-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  height: calc(65vh);
+  padding: 0 3%;
+}
+/* 错落有致：底边同高，高度比例不同 */
+.toc__part {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem 1.8rem 2rem;
+  background: rgba(22, 33, 62, 0.65);
+  overflow: visible;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              background 0.35s ease,
+              box-shadow 0.35s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+/* 左：42vh，稍矮 */
+.toc__part:nth-child(1) {
+  width: 22%;
+  height: calc(42vh);
+  align-self: flex-end;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  padding-left: 2.5rem;
+  z-index: 1;
+}
+/* 中：50vh，最高 */
+.toc__part:nth-child(2) {
+  width: 32%;
+  height: calc(50vh);
+  align-self: flex-end;
+  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+  padding-left: 2.8rem;
+  padding-right: 2.5rem;
+  z-index: 2;
+}
+/* 右：36vh，最矮 */
+.toc__part:nth-child(3) {
+  width: 27%;
+  height: calc(36vh);
+  align-self: flex-end;
+  clip-path: polygon(4% 0%, 100% 0%, 96% 100%, 0% 100%);
+  padding-right: 2.8rem;
+  z-index: 1;
+}
+.toc__part:hover {
+  background: rgba(201, 168, 76, 0.18);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 50px rgba(201,168,76,0.25), 0 0 100px rgba(201,168,76,0.08);
+  z-index: 10;
+}
+.toc__part::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(201,168,76,0);
+  transition: border-color 0.35s ease;
+  pointer-events: none;
+}
+.toc__part:hover::before {
+  border-color: rgba(201,168,76,0.6);
+}
+/* radar ripple on hover */
+.toc__part::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at 50% 120%, rgba(201,168,76,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.toc__part:hover::after { opacity: 1; }
+.toc__part-num {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  font-weight: 700;
+  color: rgba(201, 168, 76, 0.1);
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  position: absolute;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+.toc__part-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+.toc__part-title {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+  color: var(--cream);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 0.6rem;
+  position: relative;
+  z-index: 1;
+}
+.toc__part-meta {
+  font-size: 0.72rem;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  position: relative;
+  z-index: 1;
+}
+.toc__top { display: none; }
+.toc__divider { display: none; }
+.toc__parts { display: none; }
+
+
+
+/* ===== TRANSITION ===== */
+.transition {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 15%;
+}
+.transition__text {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3.5vw, 3rem);
+  color: var(--cream);
+  line-height: 1.6;
+  font-weight: 400;
+}
+.transition__text em {
+  color: var(--gold);
+  font-style: normal;
+}
+.transition__sub {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--dim);
+  letter-spacing: 0.3em;
+}
+
+/* ===== ENDING ===== */
+.ending--bright .ending__title { color: var(--highlight); }
+.ending--bright .ending__sub   { color: var(--cream); opacity: 0.85; }
+.ending--bright .ending__cta   { color: var(--cream); }
+.ending {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 10%;
+}
+.ending__title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+.ending__gold {
+  color: var(--gold);
+}
+.ending__sub {
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  color: var(--dim);
+  margin-bottom: 3rem;
+  letter-spacing: 0.1em;
+}
+.ending__divider {
+  width: 4rem;
+  height: 2px;
+  background: var(--gold);
+  margin: 0 auto 3rem;
+}
+.ending__cta {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 1.8vw, 1.4rem);
+  color: var(--highlight);
+  line-height: 1.8;
+  max-width: 600px;
+}
+.ending__discuss {
+  margin-top: 3rem;
+  font-size: 0.75rem;
+  color: var(--dark);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  border: 1px solid var(--dark);
+  padding: 0.5rem 1.5rem;
+  border-radius: 2px;
+}
+
+/* ===== NAV CONTROLS ===== */
+#controls {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  display: flex;
+  gap: 0.5rem;
+}
+.ctrl-btn {
+  width: 40px; height: 40px;
+  border-radius: 4px;
+  border: 1px solid rgba(201,168,76,0.3);
+  background: rgba(22,33,62,0.8);
+  color: var(--gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background 0.2s, border-color 0.2s;
+  backdrop-filter: blur(8px);
+}
+.ctrl-btn:hover {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--gold);
+}
+#slide-counter { cursor: default; }
+.ctrl-btn:hover {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--gold);
+}
+#slide-counter {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  font-size: 0.7rem;
+  color: var(--dark);
+  letter-spacing: 0.2em;
+  z-index: 999;
+}
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--gold);
+  z-index: 999;
+  transition: width 0.3s ease;
+}
+
+/* ===== KEYBOARD HINT ===== */
+#hint {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: var(--dark);
+  letter-spacing: 0.15em;
+  z-index: 999;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ===== QUOTE PAGE ===== */
+.quote-page {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 12%;
+  position: relative;
+}
+.quote-page::before {
+  content: '"';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--serif);
+  font-size: 40vw;
+  color: rgba(201,168,76,0.03);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.quote-page > * {
+  position: relative;
+  z-index: 1;
+}
+.quote-mark {
+  font-family: var(--serif);
+  font-size: 5rem;
+  color: var(--gold);
+  opacity: 0.25;
+  line-height: 0.5;
+  margin-bottom: 0.8rem;
+}
+.quote-text {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+  color: var(--cream);
+  line-height: 1.65;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+.quote-author {
+  font-size: 0.82rem;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+}
+.quote-source {
+  font-size: 0.72rem;
+  color: var(--dim);
+  margin-top: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+/* ===== INSIGHT CENTERED ===== */
+.insight-center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 10%;
+}
+.insight-center__icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.insight-center__text {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 2.8vw, 2.5rem);
+  color: var(--cream);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.insight-center__gold {
+  color: var(--gold);
+}
+.insight-center__example {
+  font-size: clamp(0.88rem, 1.3vw, 1.05rem);
+  color: var(--dim);
+  max-width: 680px;
+  line-height: 1.8;
+  border-top: 1px solid rgba(201,168,76,0.2);
+  padding-top: 1.2rem;
+  margin-top: 1.2rem;
+}
+/* large decorative quote mark in background */
+.insight-center::before {
+  content: '"';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--serif);
+  font-size: 40vw;
+  color: rgba(201,168,76,0.03);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.insight-center > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== CASE STUDY ===== */
+.case-study {
+  padding: 3% 6% 3%;
+  flex-direction: column;
+}
+.case-study__header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.case-study__name {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.case-study__years {
+  font-size: 0.82rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  align-self: flex-end;
+}
+.case-study__title {
+  font-size: 0.72rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+.case-study__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  flex: 1;
+  align-content: start;
+}
+.case-item {
+  background: rgba(22,33,62,0.6);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 6px;
+  padding: 1.4rem 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+.case-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+.case-item__year {
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+.case-item__text {
+  font-size: clamp(0.92rem, 1.25vw, 1.05rem);
+  color: var(--cream);
+  line-height: 1.7;
+  opacity: 0.88;
+}
+.case-item__key {
+  margin-top: 0.8rem;
+  font-size: clamp(0.88rem, 1.1vw, 0.98rem);
+  color: var(--highlight);
+  border-left: 2px solid var(--gold);
+  padding-left: 0.7rem;
+  line-height: 1.6;
+}
+
+/* ===== QUESTIONS ===== */
+.questions {
+  padding: 3% 8% 3%;
+  flex-direction: column;
+}
+.questions__title {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  color: var(--cream);
+  margin-bottom: 1.2rem;
+}
+.questions__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+  justify-content: flex-start;
+  align-content: start;
+}
+.question-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1.2rem;
+  background: rgba(22,33,62,0.5);
+  border-radius: 4px;
+  border-left: 3px solid var(--gold);
+}
+.question-item__num {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--gold);
+  opacity: 0.5;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.question-item__text {
+  font-size: clamp(0.92rem, 1.3vw, 1.08rem);
+  color: var(--cream);
+  line-height: 1.7;
+  opacity: 0.92;
+}
+
+/* ===== CONCLUSION ===== */
+.conclusion {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 10%;
+}
+.conclusion__eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+.conclusion__main {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 3rem);
+  color: var(--cream);
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.03em;
+}
+.conclusion__gold { color: var(--gold); }
+.conclusion__body {
+  font-size: clamp(0.92rem, 1.4vw, 1.12rem);
+  color: var(--dim);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.conclusion__final {
+  margin-top: 2rem;
+  padding: 1.5rem 2rem;
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 4px;
+  background: rgba(201,168,76,0.05);
+  max-width: 700px;
+}
+.conclusion__final-text {
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  color: var(--highlight);
+  line-height: 1.7;
+}
+
+/* ===== CONTEMPORARY ===== */
+.contemporary {
+  padding: 3% 7% 3%;
+  flex-direction: column;
+}
+.contemporary__header {
+  margin-bottom: 1rem;
+}
+.contemporary__items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  flex: 1;
+  align-items: start;
+  align-content: start;
+}
+.contemporary-item {
+  background: rgba(22,33,62,0.7);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
+}
+.contemporary-item__icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.contemporary-item__text {
+  font-size: clamp(0.88rem, 1.2vw, 1rem);
+  color: var(--cream);
+  line-height: 1.7;
+  opacity: 0.9;
+}
+.contemporary__analogy {
+  margin-top: 1.2rem;
+  padding: 1.2rem 1.5rem;
+  background: rgba(201,168,76,0.05);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 4px;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: var(--highlight);
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* ===== LAYER DIAGRAM ===== */
+.layer-diagram {
+  padding: 3% 8% 3%;
+  flex-direction: column;
+}
+.layer-diagram__title {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+}
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}
+.layer {
+  border-radius: 4px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+.layer:hover { transform: translateX(4px); }
+.layer--top {
+  background: rgba(139,69,19,0.25);
+  border: 1px solid rgba(139,69,19,0.4);
+}
+.layer--mid {
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+}
+.layer--bot {
+  background: rgba(74,155,127,0.2);
+  border: 1px solid rgba(74,155,127,0.4);
+}
+.layer__label {
+  font-size: clamp(0.92rem, 1.35vw, 1.1rem);
+  color: var(--cream);
+  font-weight: 500;
+}
+.layer__sub {
+  font-size: 0.72rem;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+}
+.layer__arrow {
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+.layer__method {
+  margin-top: 1.2rem;
+  padding: 1rem 1.5rem;
+  background: rgba(22,33,62,0.6);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 4px;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: var(--cream);
+  opacity: 0.85;
+  line-height: 1.7;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== SLIDE NAV DOTS ===== */
+#dots {
+  position: fixed;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--dark);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.dot.active {
+  background: var(--gold);
+  transform: scale(1.6);
+}
+.dot:hover { background: var(--gold); opacity: 0.7; }
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div id="slide-counter"></div>
+<div id="dots"></div>
+<div id="hint">← → 翻页 · 空格 下一页</div>
+
+<div id="stage">
+<!-- SLIDE 01: 封面 -->
+<section class="slide cover bg-cover active" data-num="01">
+  <div class="overlay"></div>
+  <div>
+    <div class="cover__tag">大学生生活启示录</div>
+    <h1 class="cover__title">「从翰林到<span>学徒</span>」</h1>
+    <p class="cover__subtitle">清末民初知识分子的「就业焦虑」</p>
+    <div class="cover__meta">
+      <span class="cover__meta-item">历史切口 × 当代启示</span>
+      <div class="cover__divider"></div>
+      <span class="cover__meta-item">三人讲 · 各十分钟</span>
+      <div class="cover__divider"></div>
+      <span class="cover__meta-item">Part 1 · Part 2 · Part 3</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 02: 目录 -->
+<section class="slide toc bg-cover" data-num="02">
+  <div class="overlay"></div>
+  <div class="toc__cards-wrapper">
+    <div class="toc__part">
+      <div class="toc__part-num">01</div>
+      <div class="toc__part-label">Part 1</div>
+      <div class="toc__part-title">历史的断崖</div>
+      <div class="toc__part-meta">1905年的科举废除</div>
+    </div>
+    <div class="toc__part">
+      <div class="toc__part-num">02</div>
+      <div class="toc__part-label">Part 2</div>
+      <div class="toc__part-title">三条路径</div>
+      <div class="toc__part-meta">沉沦者 · 翻译家 · 工程师</div>
+    </div>
+    <div class="toc__part">
+      <div class="toc__part-num">03</div>
+      <div class="toc__part-label">Part 3</div>
+      <div class="toc__part-title">今日之问</div>
+      <div class="toc__part-meta">当风口年年变，我们能带走什么</div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 03: Part 1 章节页 -->
+<section class="slide chapter chapter--right bg-ch1" data-num="03">
+  <div class="overlay-heavy"></div>
+  <div style="position:relative;">
+    <div class="chapter__label">Part 1</div>
+    <div class="chapter__num">01</div>
+    <h2 class="chapter__title">历史的断崖</h2>  </div>
+</section>
+
+<!-- SLIDE 04: 科举千年 -->
+<section class="slide content" data-num="04">
+  <div class="content__left">
+    <div class="content__left-bg" style="background-image:url('../images/chapter1_bg.png')"></div>
+    <div class="content__left-overlay"></div>
+    <div class="content__left-quote">
+      「朝为田舍郎，<br>暮登天子堂」
+    </div>
+  </div>
+  <div class="content__right">
+    <div class="content__header">
+      <div class="content__label">Part 1 · 01</div>
+      <h2 class="content__title">科举千年：<br>一张试卷定终身</h2>
+      <div class="content__divider"></div>
+    </div>
+    <div class="content__body">
+      <p>1300年历史（605—1905），世界上最漫长的选拔制度。秀才=学士，举人=硕士，进士=博士——这是中国的「学历等价体系」。</p>
+      <p>利玛窦评价：「中国实现了柏拉图『理想国』的设想。」</p>
+      <p><strong>核心命题：</strong>科举不只是一套考试制度，它是中国文明的<em>操作系统</em>——决定了谁有资格进入权力，谁注定留在田野。</p>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">04 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 05: 1905废除 -->
+<section class="slide full-content bg-ch1" data-num="05">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 1 · 02</div>
+    <h2 class="content__title">1905：废除背后的深层逻辑</h2>
+    <div class="content__divider"></div>
+    <div class="content__body" style="max-width:900px;">
+      <p>1895年<strong>甲午战败</strong>，彻底刺痛知识精英：不是器物不如人，是制度不如人。</p>
+      <p style="margin-top:1rem;padding-left:1rem;border-left:2px solid rgba(201,168,76,0.3);">康有为：「中国之割地败兵也，非他为之，而八股致之也。」</p>
+      <p style="margin-top:1rem;padding-left:1rem;border-left:2px solid rgba(201,168,76,0.3);">严复：「不变法则亡国，不废八股不能变法。」</p>
+      <p style="margin-top:1rem;padding-left:1rem;border-left:2px solid rgba(201,168,76,0.3);">梁启超：「变法之本，在育人才；人才之兴，在开学校。」</p>
+      <p style="margin-top:1.5rem;"><strong>1905年9月2日</strong>，袁世凯等联名上奏，千年科举一朝废除。</p>
+    </div>
+    <div class="insight-box" style="max-width:900px;margin-top:1.5rem;">
+      <div class="insight-box__label">历史洞察</div>
+      <div class="insight-box__text">制度可以被一纸诏书废除，但人心中的「科举逻辑」延续了整整一个世纪。</div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">05 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 06: 学历作废 -->
+<section class="slide full-content bg-cover" data-num="06">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 1 · 03</div>
+    <h2 class="content__title">「学历作废」：<br>一纸诏令，千万人的断崖</h2>
+    <div class="content__divider"></div>
+    <div class="quote-mark">"</div>
+    <blockquote class="quote-text" style="max-width:800px;margin:0 auto 2rem;text-align:center;font-size:clamp(1rem,1.8vw,1.4rem);line-height:1.8;">
+      科考一废，吾辈生路已绝，欲图他业以谋生，则又无业可托。
+    </blockquote>
+    <div class="quote-author" style="text-align:center;">— 举人 刘大鹏，《退想斋日记》</div>
+    <div class="content__body" style="max-width:900px;margin-top:2rem;">
+      <p>废除科举后，百万举人、秀才面临<strong>身份清零</strong>。旧学无法兑换现实生存资本，朝廷也未提供任何过渡机制。</p>
+      <p style="margin-top:1rem;">举人刘大鹏回乡后做塾师，民国继续务农，郁郁而终。他的日记《退想斋日记》留下了那个时代最真实的绝望。</p>
+      <div class="insight-box" style="max-width:900px;margin-top:1.5rem;">
+        <div class="insight-box__label">深层洞察</div>
+        <div class="insight-box__text">不是他们不够努力，是<strong>整个赛道被取消</strong>了，而没有人告诉他们新赛道在哪。</div>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">06 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 07: 新学堂 -->
+<section class="slide full-content bg-ch1" data-num="07">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 1 · 04</div>
+    <h2 class="content__title">「新学堂」的现实</h2>
+    <div class="content__divider"></div>
+    <div class="content__body" style="max-width:900px;">
+      <p>1902年清政府颁布《壬寅学制》，1904年颁布《癸卯学制》——中国教育正式从科举转向新式学堂。</p>
+      <div class="timeline" style="margin-top:1.5rem;padding:0;">
+        <div class="timeline__items">
+          <div class="timeline__item">
+            <div class="timeline__year">课程内容</div>
+            <div class="timeline__text">英文、算学、物理、化学、体操、图画——但新学不新，旧科不去。<br>1915年冯友兰批评：「华而不实，几乎成了科举之变相。」</div>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__year">深层矛盾</div>
+            <div class="timeline__text">制度可以<em>一朝废除</em>，心理难以<em>一夕更改</em>。<br>「状元思维」成为最顽固的心理遗产。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">07 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 08: 旧知识的困境 -->
+<section class="slide insight-center bg-ch1" data-num="08">
+  <div class="overlay"></div>
+  <div>
+    <div class="content__label" style="text-align:center;margin-bottom:2rem;">Part 1 · 05</div>
+    <div style="font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);color:var(--gold);margin-bottom:1.5rem;font-weight:700;letter-spacing:0.05em;">旧知识的困境</div>
+    <div class="quote-mark" style="text-align:center;">"</div>
+    <blockquote class="quote-text">
+      国内新学堂的学生<br>高不攀，低不就，<br>成为<em>无能的游民</em>。
+    </blockquote>
+    <div class="quote-author" style="text-align:center;">— 胡适</div>
+    <div class="content__body" style="max-width:700px;margin:2rem auto 0;text-align:center;opacity:0.8;line-height:1.8;">
+      <p>传统知识体系无法直接兑换现实世界的生存资本——这是一个<strong>知识脱嵌</strong>的问题。</p>
+      <p style="margin-top:0.8rem;">旧学是<em>关于人的学问</em>，新学是<em>关于物的技能</em>。两者之间，需要一座桥。</p>
+    </div>
+    <div class="content__footer" style="justify-content:center;margin-top:2rem;">
+      <span class="page-num">08 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 09: 身份焦虑 -->
+<section class="slide comparison" data-num="09">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 1 · 06</div>
+    <h2 class="content__title">身份焦虑：读书人何去何从</h2>
+    <div class="content__divider"></div>
+    <div class="comparison__grid">
+      <div class="compare-card compare-card--left">
+        <div class="compare-card__title">科举废除前</div>
+        <ul class="compare-card__list">
+          <li>文人身份 = 政治入场券</li>
+          <li>四书五经 = 生存技能</li>
+          <li>「翰林」= 明确的阶层位置</li>
+          <li>身份焦虑？不存在的。</li>
+        </ul>
+      </div>
+      <div class="compare-card compare-card--right">
+        <div class="compare-card__title">科举废除后</div>
+        <ul class="compare-card__list">
+          <li>身份体系瓦解，重新洗牌</li>
+          <li>经史子集换不来一口饭</li>
+          <li>革命者 / 公共知识分子 / 专业知识分子——三重分裂</li>
+          <li>没有人知道「读书人」是谁了</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight-box" style="margin-top:1.5rem;">
+      <div class="insight-box__label">核心洞察</div>
+      <div class="insight-box__text">一纸诏书废除了制度，但科举心理延续百年——这种心理遗产，今天仍在影响我们。</div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">09 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 10: 转场 -->
+<section class="slide transition bg-cover" data-num="10">
+  <div class="overlay"></div>
+  <div>
+    <div class="transition__text">
+      时代的断崖摆在眼前，<br><em>个体的选择</em>却各有不同……
+    </div>
+    <div class="transition__sub">Part 2 · 三条路径</div>
+  </div>
+</section>
+
+<!-- SLIDE 11: Part 2 章节页 -->
+<section class="slide chapter bg-ch2" data-num="11">
+  <div class="overlay-heavy"></div>
+  <div style="position:relative;">
+    <div class="chapter__label">Part 2</div>
+    <div class="chapter__num">02</div>
+    <h2 class="chapter__title">三条路径</h2>  </div>
+</section>
+
+<!-- SLIDE 12: 沉沦者 -->
+<section class="slide three-col" data-num="12">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="three-col__header">
+      <div class="content__label">Part 2 · 01</div>
+      <h2 class="content__title">三条路径</h2>
+      <div class="content__divider"></div>
+    </div>
+    <div class="three-col__grid">
+      <div class="col-card col-card--brown">
+        <div class="col-card__title">路径一：沉沦者</div>
+        <div class="col-card__text">
+          举人刘大鹏回乡教书，郁郁而终。<br><br>
+          黄巢屡举进士不第，遂为盗。<br><br>
+          <strong style="color:var(--cream);">本质</strong>：不是能力问题，是姿态问题——拒绝重新定义自己。
+        </div>
+        <div class="col-card__tag">时代的弃儿</div>
+      </div>
+      <div class="col-card col-card--gold">
+        <div class="col-card__title">路径二：翻译家</div>
+        <div class="col-card__text">
+          严复用旧学框架吸收新知。<br><br>
+          《天演论》《原富》《论自由》——用中国话语译介西学。<br><br>
+          <strong style="color:var(--cream);">本质</strong>：不是抛弃旧学，是用旧学作为理解新知的桥梁。
+        </div>
+        <div class="col-card__tag">旧学为桥</div>
+      </div>
+      <div class="col-card col-card--green">
+        <div class="col-card__title">路径三：工程师</div>
+        <div class="col-card__text">
+          詹天佑12岁留美，从零学起。<br><br>
+          京张铁路，「之」字形设计，因地制宜。<br><br>
+          <strong style="color:var(--cream);">本质</strong>：接受姿态，从头学习新技能。
+        </div>
+        <div class="col-card__tag">重新来过</div>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">12 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 13: 三种选择的背后 -->
+<section class="slide insight-center bg-ch2" data-num="13">
+  <div class="overlay"></div>
+  <div>
+    <div class="content__label" style="text-align:center;margin-bottom:1.5rem;">Part 2 · 02</div>
+    <div class="insight-center__text">
+      三种路径的本质差异<br>
+      <span class="insight-center__gold">不是知识多少</span>
+    </div>
+    <div style="font-family:var(--serif);font-size:clamp(2.5rem,5vw,4.5rem);color:var(--gold);font-weight:700;margin:2rem 0;letter-spacing:0.1em;">↓</div>
+    <div class="insight-center__text">
+      是「面对不确定性的<br><span class="insight-center__gold">应对姿态</span>」差异
+    </div>
+    <div class="insight-center__example">
+      状元思维：我已经学成了，我需要找一个匹配我「身份」的位置。<br>
+      学徒思维：我不知道什么是对的，我愿意从零开始学习。
+    </div>
+    <div class="content__footer" style="justify-content:center;margin-top:2rem;">
+      <span class="page-num">13 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 14: 案例 严复 -->
+<section class="slide case-study" data-num="14">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="case-study__header">
+      <div class="case-study__name">严复</div>
+      <div class="case-study__years">1854 — 1921</div>
+    </div>
+    <div class="case-study__title">案例深挖 · 翻译家之路</div>
+    <div class="case-study__grid">
+      <div class="case-item">
+        <div class="case-item__year">1854</div>
+        <div class="case-item__text">生于福建侯官（今闽侯），初名传初，字又陵，后改名复，字几道</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1867</div>
+        <div class="case-item__text">入福州船政学堂，学海军驾驶，与邓世昌同窗</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1871–1877</div>
+        <div class="case-item__text">留学英国皇家海军学院（格林威治），研究西方哲学与政治</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1894</div>
+        <div class="case-item__text">甲午战败——他亲眼目睹北洋水师覆没，深切刺激，弃海军而转向思想启蒙</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1895–1898</div>
+        <div class="case-item__text">连发《论世变之亟》《原强》《救亡决论》《辟韩》，系统引入西学</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1896–1898</div>
+        <div class="case-item__text">翻译《天演论》（赫胥黎）、《原富》（亚当·斯密）、《论自由》（穆勒）</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1901</div>
+        <div class="case-item__text">任京师大学堂（今北大）总办；1903年任复旦公学（复旦前身）校长</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">晚年</div>
+        <div class="case-item__key">立场日趋保守，反对辛亥革命。翻译标准「信·达·雅」影响至今。1921年病逝上海。</div>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">14 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 15: 案例 詹天佑 -->
+<section class="slide case-study" data-num="15">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="case-study__header">
+      <div class="case-study__name">詹天佑</div>
+      <div class="case-study__years">1861 — 1919</div>
+    </div>
+    <div class="case-study__title">案例深挖 · 工程师之路</div>
+    <div class="case-study__grid">
+      <div class="case-item">
+        <div class="case-item__year">1861</div>
+        <div class="case-item__text">生于广东南海，11岁考取首批留美幼童，赴美留学</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1878</div>
+        <div class="case-item__text">考入耶鲁大学谢菲尔德理工学院土木工程系，专修铁路工程，数学成绩优异，两获奖学金</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1881</div>
+        <div class="case-item__text">毕业，105名留美幼童中仅2人获得学位；回国后被分配到福州船政学堂学驾驶</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1888</div>
+        <div class="case-item__text">转入铁路工程，修建塘津铁路（唐山—天津）；1894年以压气沉箱法修建滦河大桥</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1905</div>
+        <div class="case-item__text">被任命京张铁路总工程师。西方媒体：「中国造此路之工程师尚未诞生」</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1905–1909</div>
+        <div class="case-item__text">「人」字形青龙桥折返线克服33‰坡度；6个工作面同时开凿八达岭隧道（1091米）</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1909</div>
+        <div class="case-item__text">京张铁路通车（200公里），提前两年竣工，耗资693万两，节省近30万两白银</div>
+      </div>
+      <div class="case-item">
+        <div class="case-item__year">1919 · 逝世</div>
+        <div class="case-item__key">「人」字折返线、标准轨距1435mm、自动车钩——三项标准沿用至今。58岁病逝汉口，遗言不及私。</div>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">15 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 16: 无名者 -->
+<section class="slide content" data-num="16">
+  <div class="content__left">
+    <div class="content__left-bg" style="background-image:url('../images/chapter2_bg.png')"></div>
+    <div class="content__left-overlay"></div>
+    <div class="content__left-quote">
+      历史的进步，<br>不是由「成功者」推动的，<br>是由那些<br><em>「转型者」</em>推动的。
+    </div>
+  </div>
+  <div class="content__right">
+    <div class="content__header">
+      <div class="content__label">Part 2 · 05</div>
+      <h2 class="content__title">那些没有<br>留下名字的人</h2>
+      <div class="content__divider"></div>
+    </div>
+    <div class="content__body">
+      <p>120名留美幼童，大部分被提前召回。</p>
+      <p>他们后来成为中国现代化的推动力量：</p>
+      <p style="margin-top:0.5rem;">铁路工程师、海军将领、外交官、矿务专家……</p>
+      <p style="margin-top:1rem;"><strong>一个数据：</strong>120名幼童中，只有詹天佑等2人获得大学学位。</p>
+      <p style="margin-top:1rem;"><em>他们没有显赫的名声，但他们的转型本身就是一种成功。</em></p>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">16 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 17: 共同特征 -->
+<section class="slide insight-center bg-ch2" data-num="17">
+  <div class="overlay"></div>
+  <div>
+    <div class="content__label" style="text-align:center;margin-bottom:1.5rem;">Part 2 · 06</div>
+    <div class="insight-center__icon">◎</div>
+    <div class="insight-center__text">
+      三种路径的<em style="color:var(--gold);">共同特征</em>
+    </div>
+    <div class="quote-mark" style="text-align:center;font-size:4rem;">"</div>
+    <blockquote class="quote-text" style="font-size:clamp(1.2rem,2.2vw,1.8rem);max-width:700px;margin:0 auto;">
+      不是知识内容，<br>是「快速学习并<br><span style="color:var(--gold);">重新定义自己</span>」的<em>元能力</em>。
+    </blockquote>
+    <div class="content__footer" style="justify-content:center;margin-top:2rem;">
+      <span class="page-num">17 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 18: 转场 -->
+<section class="slide transition bg-cover" data-num="18">
+  <div class="overlay"></div>
+  <div>
+    <div class="transition__text">
+      当风口年年变，<br>我们能<em>带走</em>什么？
+    </div>
+    <div class="transition__sub">Part 3 · 今日之问</div>
+  </div>
+</section>
+
+<!-- SLIDE 19: Part 3 章节页 -->
+<section class="slide chapter chapter--right bg-ch3" data-num="19">
+  <div class="overlay-heavy"></div>
+  <div style="position:relative;">
+    <div class="chapter__label">Part 3</div>
+    <div class="chapter__num">03</div>
+    <h2 class="chapter__title">今日之问</h2>  </div>
+</section>
+
+<!-- SLIDE 20: 当风口年年变 -->
+<section class="slide contemporary" data-num="20">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 3 · 01</div>
+    <h2 class="content__title">当风口年年变，<br>我们在焦虑什么</h2>
+    <div class="content__divider"></div>
+    <div class="contemporary__items">
+      <div class="contemporary-item">
+        <div class="contemporary-item__icon">⚡</div>
+        <div class="contemporary-item__text">「学的技术明年就过时」</div>
+      </div>
+      <div class="contemporary-item">
+        <div class="contemporary-item__icon">🔄</div>
+        <div class="contemporary-item__text">「行业风口突变」</div>
+      </div>
+      <div class="contemporary-item">
+        <div class="contemporary-item__icon">⏳</div>
+        <div class="contemporary-item__text">「35岁危机」</div>
+      </div>
+    </div>
+    <div class="contemporary__analogy">
+      <strong>类比：</strong>1905年的读书人 vs 2026年的大学生——本质都是「旧知识 vs 新技能」的焦虑。问题换了衣服，本质没变。
+    </div>
+    <div class="content__footer">
+      <span class="page-num">20 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 21: 错误的二元对立 -->
+<section class="slide comparison" data-num="21">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 3 · 02</div>
+    <h2 class="content__title">旧学问 vs 新技能：<br>一个错误的问题</h2>
+    <div class="content__divider"></div>
+    <div class="comparison__grid">
+      <div class="compare-card compare-card--left">
+        <div class="compare-card__title" style="color:var(--brown);">错误的问题</div>
+        <ul class="compare-card__list">
+          <li>「该学什么技术？」</li>
+          <li>「哪个行业最稳定？」</li>
+          <li>「该转哪个赛道？」</li>
+          <li>→ 追逐变化，永远追不上</li>
+        </ul>
+      </div>
+      <div class="compare-card compare-card--right">
+        <div class="compare-card__title" style="color:var(--gold);">正确的问题</div>
+        <ul class="compare-card__list">
+          <li>「该具备什么样的<strong>学习能力</strong>？」</li>
+          <li>「哪些<strong>元能力</strong>是最稳定的？」</li>
+          <li>「我如何翻译旧知识到新领域？」</li>
+          <li>→ 回到不变的东西</li>
+        </ul>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">21 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 22: 真正可迁移的东西 -->
+<section class="slide layer-diagram" data-num="22">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;max-width:900px;margin:0 auto;">
+    <div class="content__label">Part 3 · 03</div>
+    <h2 class="layer-diagram__title">能力迁移的底层逻辑</h2>
+    <div class="layers">
+      <div class="layer layer--top">
+        <div>
+          <div class="layer__label">表层 · 知识内容</div>
+          <div class="layer__sub">会变化 · 可过期</div>
+        </div>
+        <div class="layer__arrow">▲</div>
+      </div>
+      <div class="layer layer--mid">
+        <div>
+          <div class="layer__label">中层 · 技能方法</div>
+          <div class="layer__sub">部分可迁移</div>
+        </div>
+        <div class="layer__arrow">▲</div>
+      </div>
+      <div class="layer layer--bot">
+        <div>
+          <div class="layer__label" style="color:var(--gold);">底层 · 认知框架</div>
+          <div class="layer__sub">最稳定 · 最可迁移</div>
+        </div>
+        <div class="layer__arrow" style="color:var(--green);">★</div>
+      </div>
+    </div>
+    <div class="layer__method">
+      <strong style="color:var(--gold);">方法：</strong>每次学习新知识，问自己——这个知识背后，有什么<em>更底层的框架</em>？这个框架可以迁移到哪里？
+    </div>
+    <div class="content__footer" style="margin-top:1.5rem;">
+      <span class="page-num">22 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 23: 状元思维 vs 学徒思维 -->
+<section class="slide comparison" data-num="23">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 3 · 04</div>
+    <h2 class="content__title">「状元思维」与「学徒思维」</h2>
+    <div class="content__divider"></div>
+    <div class="comparison__grid">
+      <div class="compare-card compare-card--left">
+        <div class="compare-card__title">状元思维</div>
+        <ul class="compare-card__list">
+          <li>我已经<em>学成了</em></li>
+          <li>我需要找一个匹配我「身份」的位置</li>
+          <li>知识是<strong>资产</strong>，要保值</li>
+          <li>面对变化：寻找确定性</li>
+          <li>1905年的翰林</li>
+        </ul>
+      </div>
+      <div class="compare-card compare-card--right">
+        <div class="compare-card__title">学徒思维</div>
+        <ul class="compare-card__list">
+          <li>我不知道什么是对的</li>
+          <li>我愿意从零开始学习</li>
+          <li>知识是<strong>工具</strong>，要用起来</li>
+          <li>面对变化：拥抱不确定性</li>
+          <li>留美幼童 / 翻译家</li>
+        </ul>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">23 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 24: 给大学生的三个问题 -->
+<section class="slide questions" data-num="24">
+  <div class="overlay-light"></div>
+  <div style="position:relative;width:100%;">
+    <div class="content__label">Part 3 · 05</div>
+    <h2 class="content__title">给大学生的三个问题</h2>
+    <div class="content__divider"></div>
+    <div class="questions__list">
+      <div class="question-item">
+        <div class="question-item__num">壹</div>
+        <div class="question-item__text">我现在学的东西，五年后还有用吗？如果不是，那么我学的<strong style="color:var(--gold);">是内容还是框架</strong>？</div>
+      </div>
+      <div class="question-item">
+        <div class="question-item__num">贰</div>
+        <div class="question-item__text">如果我的专业「废除」了，我会做什么？——这是对你「转型能力储备」的<strong style="color:var(--gold);">压力测试</strong>。</div>
+      </div>
+      <div class="question-item">
+        <div class="question-item__num">叁</div>
+        <div class="question-item__text">我有哪些「<strong style="color:var(--gold);">可迁移的元能力</strong>」？不是「我会什么」，而是「<em>我能学什么</em>」。</div>
+      </div>
+    </div>
+    <div class="content__footer">
+      <span class="page-num">24 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 25: 真正的铁饭碗 -->
+<section class="slide insight-center bg-ch3" data-num="25" style="background-color:#2d1f0a;">
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(45,31,10,0.82),rgba(60,40,15,0.75),rgba(45,31,10,0.85));"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="content__label" style="text-align:center;margin-bottom:1.5rem;color:#8a6a30;">Part 3 · 06</div>
+    <div class="insight-center__text" style="color:#1a1005;">
+      真正的<em style="color:#7a5c20;font-style:normal;">铁饭碗</em>
+    </div>
+    <div class="quote-mark" style="color:#8a6a30;">"</div>
+    <blockquote class="quote-text" style="font-size:clamp(1.2rem,2.5vw,2rem);color:#1a1005;">
+      不是找一个稳定的工作<br>
+      不是拥有多少知识储备<br>
+      <span style="color:#7a5c20;">是不断重塑自己的能力</span>
+    </blockquote>
+    <div class="insight-center__example" style="color:#2d2010;border-top-color:rgba(122,92,32,0.3);">
+      类比：1905年的翰林，如果有「学习新技能」的元能力，就不会沉沦。严复不会，因为他是翻译家。詹天佑不会，因为他是工程师。<br>他们都是「学徒」。
+    </div>
+    <div class="content__footer" style="justify-content:center;margin-top:2rem;">
+      <span class="page-num" style="color:#5a4015;">25 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 26: 结论 -->
+<section class="slide conclusion" data-num="26">
+  <div class="overlay-light"></div>
+  <div>
+    <div class="conclusion__eyebrow">最终结论</div>
+    <div class="conclusion__main">
+      <span class="conclusion__gold">1905</span>年的翰林，面对「科举废除」<br>
+      <span class="conclusion__gold">2026</span>年的大学生，面对「AI替代」<br><br>
+      <span class="conclusion__gold">相同的问题</span>：旧知识 vs 新技能<br>
+      <span class="conclusion__gold">相同的答案</span>：不是知识，是姿态
+    </div>
+    <div class="conclusion__final">
+      <div class="conclusion__final-text">
+        真正的核心竞争力，是「快速学习并重新定义自己」的能力。
+      </div>
+    </div>
+    <div class="content__footer" style="justify-content:center;margin-top:2rem;">
+      <span class="page-num">26 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 27: 致谢 -->
+<section class="slide ending ending--bright bg-ending" data-num="27">
+  <div class="overlay"></div>
+  <div>
+    <div class="ending__title">感谢<span class="ending__gold">聆听</span></div>
+    <div class="ending__sub">从翰林到学徒 · 从科举到AI</div>
+    <div class="ending__divider"></div>
+    <div class="ending__cta">
+      不变的是：<br><span style="color:var(--gold);font-family:var(--serif);font-size:1.3em;">拥抱变化的能力</span>
+    </div>
+    <div class="ending__discuss">讨论环节</div>
+  </div>
+</section>
+
+<!-- SLIDE 28: 备用致谢页 -->
+<section class="slide ending bg-cover" data-num="28">
+  <div class="overlay"></div>
+  <div>
+    <div style="font-family:var(--serif);font-size:clamp(0.7rem,1vw,0.9rem);letter-spacing:0.5em;color:var(--gold);margin-bottom:2rem;">FINIS</div>
+    <div class="ending__title">「<span class="ending__gold">翰林</span>」已死<br>「<span class="ending__gold">学徒</span>」永生</div>
+    <div class="ending__sub">感谢聆听</div>
+    <div class="ending__divider"></div>
+    <div class="ending__cta" style="font-size:clamp(0.85rem,1.3vw,1rem);opacity:0.7;line-height:1.8;">
+      历史切片 · 三条路径 · 当代启示
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 29: 补充页-状元思维警示 -->
+<section class="slide insight-center bg-cover" data-num="29" style="background-color:#1a2a4a;">
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(20,40,80,0.88),rgba(15,30,60,0.75),rgba(20,40,80,0.88));"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="content__label" style="text-align:center;margin-bottom:1.5rem;color:#6ab0e0;">延伸思考</div>
+    <div class="insight-center__text" style="color:#c0d8f0;">
+      一个来自自身的<em style="color:#6ab0e0;font-style:normal;">警示</em>
+    </div>
+    <div class="quote-mark" style="color:#5a8ab5;">"</div>
+    <blockquote class="quote-text" style="font-size:clamp(1.1rem,2vw,1.6rem);color:#c0d8f0;">
+      预判失败<br>然后<em style="color:#6ab0e0;">提前放弃</em>
+    </blockquote>
+    <div class="insight-center__example" style="text-align:center;color:#8ab0c8;border-top-color:rgba(100,170,220,0.25);">
+      这是比「真失败」更隐蔽的敌人——不是事情真的不行，是你<strong style="color:#6ab0e0;">提前认定</strong>它不行。<br><br>
+      1905年的翰林，不是因为没有能力而沉沦，是因为<em style="color:#6ab0e0;">不愿意承认需要重新学</em>。
+    </div>
+    <div class="content__footer" style="justify-content:center;margin-top:2rem;">
+      <span class="page-num" style="color:#5a8ab5;">29 / 30</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 30: 最后总结 -->
+<section class="slide conclusion" data-num="30" style="background-color:#0a1628;">
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,22,40,0.9),rgba(20,35,65,0.88),rgba(10,22,40,0.92));"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="conclusion__eyebrow" style="color:#5a8ab5;">最后一句话</div>
+    <div class="conclusion__main" style="font-size:clamp(1.4rem,3vw,2.5rem);color:#e0d8c8;">
+      你学的是<em style="color:#6ab0e0;font-style:normal;">知识</em>，<br>
+      还是<em style="color:#6ab0e0;font-style:normal;">学习知识的能力</em>？
+    </div>
+    <div class="conclusion__body" style="color:#8ab0c8;margin-top:1rem;">
+      如果是前者，你的「学历」会过期。<br>
+      如果是后者，你的「学历」永远有效。
+    </div>
+    <div class="ending__discuss" style="margin-top:3rem;background:rgba(100,160,200,0.15);color:#6ab0e0;border-color:rgba(100,160,200,0.4);">感谢聆听 · 欢迎讨论</div>
+  </div>
+</section>
+
+</div><!-- #stage -->
+
+<!-- CONTROLS -->
+<div id="controls">
+  <button class="ctrl-btn" onclick="prevSlide()" title="上一页">←</button>
+  <button class="ctrl-btn" onclick="nextSlide()" title="下一页">→</button>
+</div>
+
+<script>
+// Slide Navigation
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+let isAnimating = false;
+
+const progressBar = document.getElementById('progress-bar');
+const slideCounter = document.getElementById('slide-counter');
+const dotsContainer = document.getElementById('dots');
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsContainer.appendChild(d);
+});
+const dots = document.querySelectorAll('.dot');
+
+function updateUI() {
+  progressBar.style.width = ((current + 1) / total * 100) + '%';
+  slideCounter.textContent = `${String(current + 1).padStart(2, '0')} / ${total}`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+function goTo(index) {
+  if (isAnimating || index === current || index < 0 || index >= total) return;
+  isAnimating = true;
+  slides[current].classList.remove('active');
+  current = index;
+  slides[current].classList.add('active');
+  updateUI();
+  setTimeout(() => { isAnimating = false; }, 450);
+}
+
+function nextSlide() { goTo(current + 1); }
+function prevSlide() { goTo(current - 1); }
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault(); nextSlide();
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault(); prevSlide();
+  } else if (e.key === 'Home') {
+    e.preventDefault(); goTo(0);
+  } else if (e.key === 'End') {
+    e.preventDefault(); goTo(total - 1);
+  }
+});
+
+// Touch/swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) dx < 0 ? nextSlide() : prevSlide();
+});
+
+// Wheel scroll — one notch = one page
+let wheelTimeout = null;
+document.addEventListener('wheel', e => {
+  if (wheelTimeout) return;
+  wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 600);
+  if (e.deltaY > 0) nextSlide(); else prevSlide();
+}, { passive: true });
+
+// Init
+updateUI();
+
+// Hide hint after 5s
+setTimeout(() => { document.getElementById('hint').style.opacity = '0'; }, 5000);
+</script>
+</body>
+</html>
